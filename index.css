@@ -1,0 +1,267 @@
+/* Enhanced Styles with Blue, Green, Yellow, and Red Accents */
+:root { 
+    --bg: #f5f7fa;          /* Slightly deeper light background */
+    --card: #ffffff;        /* Crisp white card background */
+    
+    --primary-blue: #0a7aff; /* A vibrant, modern blue */
+    --primary-blue-light: #4ea8ff;
+    --primary-blue-dark: #005edd; 
+    
+    --text-dark: #2c3e50;   /* Darker text for readability */
+    --text-medium: #5b6f82; /* Medium gray for descriptions */
+    --text-light: #9baab8;  /* Light gray for muted text/small info */
+    --border-light: #e0e6ed; /* Subtle border color */
+    
+    --shadow-soft: 0 6px 20px rgba(10, 122, 255, 0.08); 
+    --transition-speed: 0.2s; 
+    
+    /* NEW ACCENT COLORS */
+    --color-success: #10b981;    /* Vibrant Green (Success/Done) */
+    --color-success-dark: #059669;
+    --color-danger: #ef4444;     /* Vibrant Red (Danger/Remove) */
+    --color-danger-dark: #dc2626;
+    --color-warning: #f59e0b;    /* Vibrant Yellow/Orange (Warning/Pending) */
+    --color-warning-dark: #d97706;
+}
+
+/* Base Styles */
+* { box-sizing: border-box; }
+
+body { 
+    margin: 0; 
+    font-family: 'Inter', system-ui, Arial, sans-serif; 
+    background: var(--bg); 
+    color: var(--text-dark); 
+    line-height: 1.6;
+    /* THIS IS THE CRITICAL FIX: Forces the browser to use a light color scheme */
+    color-scheme: light; 
+}
+
+.wrap { 
+    max-width: 1200px; 
+    margin: 25px auto; 
+    padding: 0 20px; 
+}
+
+/* Header Styling */
+header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 25px; 
+    margin-bottom: 25px;
+    background-color: var(--card);
+    border-radius: 12px; 
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05); 
+}
+
+header h1 {
+    font-size: 1.8rem; 
+    color: var(--primary-blue-dark); 
+    margin: 0;
+}
+
+.head-right { 
+    display: flex; 
+    gap: 15px; 
+    align-items: center; 
+    font-size: 0.95rem;
+    color: var(--text-medium);
+}
+
+/* Grid Layout */
+.grid { 
+    display: grid; 
+    grid-template-columns: 1fr 450px; 
+    gap: 30px; 
+    margin-top: 20px; 
+}
+
+/* Card Styling - More pronounced and interactive */
+.card { 
+    background: var(--card); 
+    padding: 20px 25px; 
+    border-radius: 12px; 
+    box-shadow: var(--shadow-soft); 
+    border: 1px solid var(--border-light); 
+    margin-bottom: 25px; 
+    transition: transform var(--transition-speed) ease-out, box-shadow var(--transition-speed) ease-out;
+}
+
+.card:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 10px 30px rgba(10, 122, 255, 0.12); 
+}
+
+.card h2, .card h3, .card h4 {
+    color: var(--primary-blue-dark);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.card h4 { font-size: 1.2rem; } 
+
+/* Form Elements */
+input, textarea, select { 
+    width: 100%; 
+    padding: 12px; 
+    margin: 10px 0; 
+    border-radius: 8px; 
+    border: 1px solid var(--border-light); 
+    font-size: 1rem;
+    color: var(--text-dark);
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+input::placeholder, textarea::placeholder {
+    color: var(--text-light); 
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(10, 122, 255, 0.2); 
+}
+
+/* Primary Blue Button (default) */
+button { 
+    padding: 12px 20px; 
+    border-radius: 8px; 
+    border: none; 
+    cursor: pointer; 
+    background: var(--primary-blue); 
+    color: white; 
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    transition: background-color var(--transition-speed), transform 0.1s, box-shadow var(--transition-speed);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+button:hover {
+    background: var(--primary-blue-dark);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+}
+
+button:active {
+    transform: translateY(2px); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+
+/* --- NEW COLOR UTILITY BUTTONS (for explicit use) --- */
+/* Use .button-success class on a button for green color */
+.button-success {
+    background: var(--color-success);
+}
+.button-success:hover {
+    background: var(--color-success-dark);
+}
+
+/* Use .button-danger class on a button for red color */
+.button-danger {
+    background: var(--color-danger);
+}
+.button-danger:hover {
+    background: var(--color-danger-dark);
+}
+/* --- END UTILITY BUTTONS --- */
+
+
+.muted { 
+    color: var(--text-light); 
+    font-size: 0.85rem; 
+    margin-top: 10px; 
+}
+
+/* Item Lists */
+.item { 
+    padding: 15px 0; 
+    border-bottom: 1px solid var(--border-light); 
+    transition: background-color var(--transition-speed);
+}
+.item:last-child { border-bottom: none; padding-bottom: 0; }
+.item:first-child { padding-top: 0; }
+
+.item h4 { margin-bottom: 5px; color: var(--text-dark); }
+.item p { font-size: 0.95rem; color: var(--text-medium); margin-top: 5px; margin-bottom: 10px; }
+.item small { color: var(--text-light); font-size: 0.8rem; }
+.item div { font-size: 0.9rem; color: var(--text-medium); margin-top: 8px; }
+
+/* Rubric Editor Specifics - using RED for Remove button */
+.rubric-editor { margin-top: 20px; }
+.rubric-editor h4 { margin-bottom: 10px; color: var(--text-dark); }
+.rubric-row { 
+    display: flex; gap: 10px; align-items: center; margin-bottom: 8px; 
+    background-color: var(--bg); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid var(--border-light);
+}
+.rubric-row input[type=text] { flex-grow: 1; margin: 0; padding: 8px; }
+.rubric-row input[type=number]{ width: 80px; flex-shrink: 0; margin: 0; padding: 8px; }
+
+/* Target the remove button specifically within the rubric row */
+.rubric-row button { 
+    padding: 6px 12px; font-size: 0.9rem; 
+    background-color: var(--color-danger); /* RED */
+    box-shadow: none;
+}
+.rubric-row button:hover {
+    background-color: var(--color-danger-dark);
+    transform: translateY(0);
+    box-shadow: none;
+}
+.rubric-editor > button { margin-top: 10px; }
+
+
+/* --- STATUS TAGS / INDICATORS (using Green and Yellow) --- */
+
+.status-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 8px;
+}
+
+/* Yellow/Orange for Pending status */
+.status-tag.pending {
+    background-color: #ffedd5; 
+    color: var(--color-warning-dark); 
+}
+
+/* Green for Done/Submitted status */
+.status-tag.done {
+    background-color: #d1fae5; 
+    color: var(--color-success-dark); 
+}
+
+/* --- END STATUS TAGS --- */
+
+/* Responsive Adjustments */
+@media (max-width: 900px) { 
+    .wrap { padding: 0 15px; }
+    .grid { 
+        grid-template-columns: 1fr; 
+        gap: 20px; 
+    }
+    header { 
+        flex-direction: column; 
+        align-items: flex-start; 
+        padding: 15px;
+    }
+    header h1 { margin-bottom: 10px; }
+    .head-right { width: 100%; justify-content: flex-end; }
+    .card { margin-bottom: 15px; }
+}
+
+@media (max-width: 500px) {
+    header h1 { font-size: 1.5rem; }
+    .head-right { flex-direction: column; align-items: flex-end; gap: 8px; }
+    .head-right > div { margin-right: auto; }
+    .head-right button { width: auto; }
+    .rubric-row { flex-wrap: wrap; }
+    .rubric-row input[type=text] { width: 100%; }
+    .rubric-row input[type=number] { width: calc(50% - 5px); }
+    .rubric-row button { width: calc(50% - 5px); }
+}
