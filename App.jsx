@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+ import React, { useEffect, useMemo, useState } from 'react'
 
 // Helper utils: localStorage wrapper
 const LS = {
@@ -17,10 +17,10 @@ const LS = {
 function seed() {
   if (!LS.get('users')) {
     const users = [
-      { id: 't1', name: 'Teacher Alice', role: 'teacher', email: 'alice@school.com' },
-      { id: 's1', name: 'Student Rohini', role: 'student', email: 'rohini@example.com' },
-      { id: 's2', name: 'Student Ravi', role: 'student', email: 'ravi@example.com' },
-  { id: 's3', name: 'Student Yaswanth', role: 'student', email: 'yaswanth@example.com' }
+      { id: 't1', name: 'Teacher Alice', role: 'teacher', email: 'alice@school.com', password: 'password' },
+      { id: 's1', name: 'Student Rohini', role: 'student', email: 'rohini@example.com', password: 'password' },
+      { id: 's2', name: 'Student Ravi', role: 'student', email: 'ravi@example.com', password: 'password' },
+      { id: 's3', name: 'Student Yaswanth', role: 'student', email: 'yaswanth@example.com', password: 'password' }
     ]
     LS.set('users', users)
   }
@@ -38,17 +38,38 @@ function seed() {
 // Small unique id generator
 const uid = (p='id') => p + '_' + Math.random().toString(36).slice(2,9)
 
-// Simple fake auth: pick a user to "login"
-function Login({ users, onLogin }){
-  const [sel, setSel] = useState(users[0]?.id || '')
+// Role selector
+function RoleSelector({ onSelectRole }){
   return (
     <div className="card">
-      <h2>Mock Login</h2>
-      <select value={sel} onChange={e=>setSel(e.target.value)}>
-        {users.map(u=> <option key={u.id} value={u.id}>{u.name} ({u.role})</option>)}
-      </select>
-      <button onClick={()=>onLogin(users.find(u=>u.id===sel))}>Continue</button>
-      <p className="muted">This is a frontend-only demo. No passwords required.</p>
+      <h2>Select Your Role</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <button onClick={() => onSelectRole('teacher')}>Teacher</button>
+        <button onClick={() => onSelectRole('student')}>Student</button>
+      </div>
+    </div>
+  )
+}
+
+// Simple fake auth: pick a user to "login"
+function Login({ users, role, onLogin }){
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const handleLogin = () => {
+    const user = users.find(u => u.email === email && u.role === role)
+    if (user) {
+      onLogin(user)
+    } else {
+      alert(`Invalid ${role} email`)
+    }
+  }
+  return (
+    <div className="card">
+      <h2>{role.charAt(0).toUpperCase() + role.slice(1)} Login</h2>
+      <input type="email" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} />
+      <input type="password" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} />
+      <button onClick={handleLogin}>Login</button>
+      <p className="muted">Any password works for demo purposes.</p>
     </div>
   )
 }
@@ -156,6 +177,7 @@ export default function App(){
   useEffect(seed, [])
   const users = LS.get('users', [])
   const [user, setUser] = useState(LS.get('currentUser', null))
+  const [selectedRole, setSelectedRole] = useState(null)
   useEffect(()=> LS.set('currentUser', user), [user])
 
   const [assignments, setAssignments] = useState(LS.get('assignments', []))
@@ -208,13 +230,31 @@ export default function App(){
     })
   }
 
-  const logout = ()=> setUser(null)
+  const logout = ()=> {
+    setUser(null)
+    setSelectedRole(null)
+  }
 
   // derived
   const mySubmissions = useMemo(()=> submissions.filter(s=> s.authorId === user?.id), [submissions, user])
   const myAssignedReviews = useMemo(()=> reviews.filter(r=> r.reviewerId === user?.id), [reviews, user])
 
-  if (!user) return <div className="wrap"><Login users={users} onLogin={u=>setUser(u)} /></div>
+  if (!user) {
+    if (!selectedRole) return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div style={{ maxWidth: '400px', width: '100%' }}>
+          <RoleSelector onSelectRole={setSelectedRole} />
+        </div>
+      </div>
+    )
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div style={{ maxWidth: '400px', width: '100%' }}>
+          <Login users={users} role={selectedRole} onLogin={u=>setUser(u)} />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="wrap">
